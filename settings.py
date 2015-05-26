@@ -1,5 +1,7 @@
 """App settings that should not ever be changed at runtime."""
 
+import json
+
 
 EMAIL_ADDRESS = 'reminders.commune2.0@gmail.com'
 

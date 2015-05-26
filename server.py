@@ -1,13 +1,7 @@
 
-import json
-
 import flask
-import twilio
-
-from google.appengine.api import mail
 
 import handlers
-import settings
 
 
 def _ConfigureRoutes(app):
