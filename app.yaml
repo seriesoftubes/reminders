@@ -6,4 +6,5 @@ threadsafe: yes
 
 handlers:
 - url: .*
-  script: main.app
+  script: server.app
+  secure: always
