@@ -1,3 +1,4 @@
+"""The Flask server + routes."""
 
 import flask
 
@@ -13,3 +14,4 @@ app.config['DEBUG'] = True
 app.add_url_rule('/', view_func=handlers.Hello)
 app.add_url_rule('/create_person', view_func=handlers.CreatePerson)
 app.add_url_rule('/get_people', view_func=handlers.GetAllPeople)
+app.add_url_rule('/delete_person', view_func=handlers.DeletePerson)

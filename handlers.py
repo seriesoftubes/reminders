@@ -1,5 +1,8 @@
 """Handler functions."""
 
+import logging
+
+from flask import jsonify
 from flask import request
 import twilio
 
@@ -30,13 +33,25 @@ def Hello():
 
 
 def CreatePerson():
-  name = request.args['name']
+  full_name = request.args['full_name']
   phone_number = request.args['phone_number']
+  logging.info('RAW phone number: {}'.format(phone_number))
   email_address = request.args['email_address']
-  sort_order = int(request.args['sort_order'])
-  person = people.Create(name, phone_number, email_address, sort_order)
-  return str(person)
+  sort_order = request.args['sort_order']
+  person, action = people.Upsert(
+    full_name=full_name, phone_number=phone_number, email_address=email_address,
+    sort_order=sort_order)
+  return jsonify(action=action, person=person.to_dict())
 
 
 def GetAllPeople():
-  return str(people.GetAll())
+  all_people = [person.to_dict() for person in people.GetAll()]
+  logging.info('person0: {}'.format(all_people[0]))
+  logging.info('got %d people', len(all_people))
+  return jsonify(people=all_people)
+
+
+def DeletePerson():
+  full_name = request.args['full_name']
+  deleted_person = people.Delete(full_name)
+  return jsonify(deleted=deleted_person.to_dict())
