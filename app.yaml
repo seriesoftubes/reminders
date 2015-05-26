@@ -1,10 +1,15 @@
 application: reminders-957
-version: 1
+version: 2
 runtime: python27
 api_version: 1
 threadsafe: yes
 
 handlers:
-- url: .*
+- url: /people/*
+  script: server.app
+  secure: always
+  login: required
+
+- url: /.*
   script: server.app
   secure: always
