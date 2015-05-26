@@ -1,4 +1,6 @@
 
+import json
+
 import flask
 import twilio
 
@@ -9,9 +11,15 @@ app.config['DEBUG'] = True
 # the App Engine WSGI application server.
 
 
+def _GetAppSecrets():
+  with open('secrets.json', 'r') as f:
+    return json.loads(f.read())
+
+
 @app.route('/')
 def Hello():
-  return 'Hello Twilio version {0}!'.format(twilio.__version__)
+  secrets = _GetAppSecrets()
+  return 'Hello secrets! {}'.format(secrets)
 
 
 @app.errorhandler(404)
