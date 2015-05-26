@@ -55,3 +55,9 @@ def DeletePerson():
   full_name = request.args['full_name']
   deleted_person = people.Delete(full_name)
   return jsonify(deleted=deleted_person.to_dict())
+
+
+def ToggleActive():
+  full_name = request.args['full_name']
+  person = people.TogglePersonActiveStatus(full_name)
+  return jsonify(updated=person.to_dict())

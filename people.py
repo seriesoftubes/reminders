@@ -9,11 +9,16 @@ ACTION_UPDATE = 'update'
 _US_PHONE_NUMBER_PREFIX = '+1'
 
 
+class NotFound(Exception):
+  pass
+
+
 class Person(ndb.Model):
   full_name = ndb.StringProperty(required=True)
   phone_number = ndb.StringProperty(required=True)
   email_address = ndb.StringProperty(required=True)
   sort_order = ndb.IntegerProperty(required=True)
+  is_active = ndb.BooleanProperty(default=True)
 
   def __str__(self):
     return '<Person {}>'.format(self.to_dict())
@@ -23,6 +28,10 @@ class Person(ndb.Model):
   @classmethod
   def GetByFullName(cls, full_name):
     return cls.query().filter(cls.full_name == full_name).get()
+
+  @classmethod
+  def GetActive(cls):
+    return cls.query().filter(cls.is_active == True)
 
 
 def _LowerStrip(string):
@@ -64,9 +73,25 @@ def Upsert(full_name, phone_number, email_address, sort_order):
 def Delete(full_name):
   full_name = _LowerStrip(full_name)
   person = Person.GetByFullName(full_name)
+  if not person:
+    raise NotFound(full_name)
   person.key.delete()
   return person
 
 
 def GetAll():
   return Person.query().order(Person.sort_order).fetch()
+
+
+def GetActive():
+  return Person.GetActive().order(Person.sort_order).fetch()
+
+
+def TogglePersonActiveStatus(full_name):
+  full_name = _LowerStrip(full_name)
+  person = Person.GetByFullName(full_name)
+  if not person:
+    raise NotFound(full_name)
+  person.is_active = not person.is_active
+  person.put()
+  return person
