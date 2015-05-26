@@ -11,3 +11,5 @@ app.config['DEBUG'] = True
 
 # Routes
 app.add_url_rule('/', view_func=handlers.Hello)
+app.add_url_rule('/create_person', view_func=handlers.CreatePerson)
+app.add_url_rule('/get_people', view_func=handlers.GetAllPeople)
