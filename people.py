@@ -18,7 +18,8 @@ class Person(ndb.Model):
   phone_number = ndb.StringProperty(required=True)
   email_address = ndb.StringProperty(required=True)
   sort_order = ndb.IntegerProperty(required=True)
-  is_active = ndb.BooleanProperty(default=True)
+  is_in_commune = ndb.BooleanProperty(default=True)
+  can_do_trash = ndb.BooleanProperty(default=True)
 
   def __str__(self):
     return '<Person {}>'.format(self.to_dict())
@@ -30,8 +31,8 @@ class Person(ndb.Model):
     return cls.query().filter(cls.full_name == full_name).get()
 
   @classmethod
-  def GetActive(cls):
-    return cls.query().filter(cls.is_active == True)
+  def GetTrashPeople(cls):
+    return cls.query().filter(cls.can_do_trash == True)
 
 
 def _LowerStrip(string):
@@ -83,15 +84,16 @@ def GetAll():
   return Person.query().order(Person.sort_order).fetch()
 
 
-def GetActive():
-  return Person.GetActive().order(Person.sort_order).fetch()
+def GetTrashPeople():
+  return Person.GetTrashPeople().order(Person.sort_order).fetch()
 
 
-def TogglePersonActiveStatus(full_name):
+def ToggleProperty(full_name, property_name):
   full_name = _LowerStrip(full_name)
   person = Person.GetByFullName(full_name)
   if not person:
     raise NotFound(full_name)
-  person.is_active = not person.is_active
+  current_value = getattr(person, property_name)
+  setattr(person, property_name, not current_value)
   person.put()
   return person

@@ -57,7 +57,13 @@ def DeletePerson():
   return jsonify(deleted=deleted_person.to_dict())
 
 
-def ToggleActive():
+def ToggleIsInCommune():
   full_name = request.args['full_name']
-  person = people.TogglePersonActiveStatus(full_name)
+  person = people.ToggleProperty(full_name, 'is_in_commune')
+  return jsonify(updated=person.to_dict())
+
+
+def ToggleCanDoTrash():
+  full_name = request.args['full_name']
+  person = people.ToggleProperty(full_name, 'can_do_trash')
   return jsonify(updated=person.to_dict())
