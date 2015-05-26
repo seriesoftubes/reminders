@@ -18,7 +18,7 @@ def _GetAppSecrets():
     return json.loads(f.read())
 _SECRETS = _GetAppSecrets()['twilio']
 
-_EMAIL_ADDRESS = 'reminders@commune-2-0.com'
+_EMAIL_ADDRESS = 'reminders.commune2.0@gmail.com'
 
 
 def _GetTwilioRestClient():
