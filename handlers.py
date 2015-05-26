@@ -19,7 +19,7 @@ def Hello():
   client = _GetTwilioRestClient()
   client.messages.create(
     to='+16313531888', from_=_TWILIO['phone_number'], body='Test')
-  from_address = _EMAIL_ADDRESS
+  from_address = settings.EMAIL_ADDRESS
   to_address = 'brianweiden@gmail.com'
   subject = 'TEST SUBJECT!'
   body = 'Test body!'
