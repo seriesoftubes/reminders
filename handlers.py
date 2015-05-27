@@ -4,6 +4,7 @@ from flask import jsonify
 from flask import request
 import twilio
 
+from google.appengine.ext import deferred
 from google.appengine.api import mail
 
 import people
@@ -67,7 +68,7 @@ def _GetTwilioRestClient():
     _TWILIO['api_user'], _TWILIO['api_secret'])
 
 
-def SendPersonalReminder():
+def _SendPersonalReminder():
   trash_person = _GetTrashPerson()
   sms = _GetTwilioRestClient()
 
@@ -80,10 +81,14 @@ def SendPersonalReminder():
   subject = 'Please take out the trash tonight'
   body = 'Thanks!'
   mail.send_mail(from_address, to_address, subject, body)
-  return 'Messages sent.'
 
 
-def SendGroupReminder():
+def SendPersonalReminder():
+  deferred.defer(_SendPersonalReminder)
+  return 'Sending messages...'
+
+
+def _SendGroupReminder():
   trash_person = _GetTrashPerson()
   sms = _GetTwilioRestClient()
 
@@ -103,4 +108,8 @@ def SendGroupReminder():
   body = 'Please make sure they did it'
   mail.send_mail(
     from_address, to_address, message, body, cc=cc_addresses)
-  return 'Messages sent.'
+
+
+def SendGroupReminder():
+  deferred.defer(_SendGroupReminder)
+  return 'Sending messages...'
