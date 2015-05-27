@@ -34,6 +34,10 @@ class Person(ndb.Model):
   def GetTrashPeople(cls):
     return cls.query().filter(cls.can_do_trash == True)
 
+  @classmethod
+  def GetCommuneDwellers(cls):
+    return cls.query().filter(cls.is_in_commune == True)
+
 
 def _LowerStrip(string):
   return string.lower().strip()
@@ -86,6 +90,10 @@ def GetAll():
 
 def GetTrashPeople():
   return Person.GetTrashPeople().order(Person.sort_order).fetch()
+
+
+def GetCommuneDwellers():
+  return Person.GetCommuneDwellers().fetch()
 
 
 def ToggleProperty(full_name, property_name):

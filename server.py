@@ -11,7 +11,10 @@ app.config['DEBUG'] = True
 # the App Engine WSGI application server.
 
 # Routes
-app.add_url_rule('/', view_func=handlers.Hello)
+app.add_url_rule('/cron/send_personal_reminder', view_func=handlers.SendPersonalReminder)
+app.add_url_rule('/cron/send_group_reminder', view_func=handlers.SendGroupReminder)
+app.add_url_rule('/cron/rotate_trash_person', view_func=handlers.RotateTrashPerson)
+
 app.add_url_rule('/people/create', view_func=handlers.CreatePerson)
 app.add_url_rule('/people/list', view_func=handlers.GetAllPeople)
 app.add_url_rule('/people/delete', view_func=handlers.DeletePerson)

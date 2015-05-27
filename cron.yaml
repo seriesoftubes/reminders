@@ -1,0 +1,13 @@
+cron:
+- url: /cron/send_personal_reminder
+  schedule: every wednesday 09:00
+  timezone: US/Pacific
+- url: /cron/send_personal_reminder
+  schedule: every wednesday 21:30
+  timezone: US/Pacific
+- url: /cron/send_group_reminder
+  schedule: every wednesday 22:00
+  timezone: US/Pacific
+- url: /cron/rotate_trash_person
+  schedule: every wednesday 22:30
+  timezone: US/Pacific
