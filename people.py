@@ -1,4 +1,4 @@
-"""Manages ppl in the commune."""
+"""Manages the people in the house."""
 
 from google.appengine.ext import ndb
 
@@ -18,7 +18,7 @@ class Person(ndb.Model):
   phone_number = ndb.StringProperty(required=True)
   email_address = ndb.StringProperty(required=True)
   sort_order = ndb.IntegerProperty(required=True)
-  is_in_commune = ndb.BooleanProperty(default=True)
+  is_in_house = ndb.BooleanProperty(default=True)
   can_do_trash = ndb.BooleanProperty(default=True)
 
   def __str__(self):
@@ -35,8 +35,8 @@ class Person(ndb.Model):
     return cls.query().filter(cls.can_do_trash == True)
 
   @classmethod
-  def GetCommuneDwellers(cls):
-    return cls.query().filter(cls.is_in_commune == True)
+  def GetHouseDwellers(cls):
+    return cls.query().filter(cls.is_in_house == True)
 
 
 def _LowerStrip(string):
@@ -92,8 +92,8 @@ def GetTrashPeople():
   return Person.GetTrashPeople().order(Person.sort_order).fetch()
 
 
-def GetCommuneDwellers():
-  return Person.GetCommuneDwellers().fetch()
+def GetHouseDwellers():
+  return Person.GetHouseDwellers().fetch()
 
 
 def ToggleProperty(full_name, property_name):

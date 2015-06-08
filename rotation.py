@@ -1,4 +1,4 @@
-"""Rotating the current trash person."""
+"""Gets and rotates the current trash person."""
 
 from google.appengine.ext import ndb
 

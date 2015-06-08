@@ -12,7 +12,7 @@ import rotation
 import settings
 
 
-_TWILIO = settings.SECRETS['twilio']
+_TWILIO = settings.TWILIO
 
 
 def CreatePerson():
@@ -37,9 +37,9 @@ def DeletePerson():
   return jsonify(deleted=deleted_person.to_dict())
 
 
-def ToggleIsInCommune():
+def ToggleIsInHouse():
   full_name = request.args['full_name']
-  person = people.ToggleProperty(full_name, 'is_in_commune')
+  person = people.ToggleProperty(full_name, 'is_in_house')
   return jsonify(updated=person.to_dict())
 
 
@@ -74,7 +74,7 @@ def _SendPersonalReminder():
 
   sms.messages.create(
     to=trash_person.phone_number, from_=_TWILIO['phone_number'],
-    body='Please take out the trash tonight! <3 the commune')
+    body='Please take out the trash tonight!')
 
   from_address = settings.EMAIL_ADDRESS
   to_address = trash_person.email_address
@@ -96,7 +96,7 @@ def _SendGroupReminder():
     trash_person.full_name)
 
   cc_addresses = []
-  for person in people.GetCommuneDwellers():
+  for person in people.GetHouseDwellers():
     sms.messages.create(
       to=person.phone_number, from_=_TWILIO['phone_number'],
       body=message)
